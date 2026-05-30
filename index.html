@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Automated Interview Slot Scheduler</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    text-align:center;
+}
+
+.container{
+    width:450px;
+    margin:50px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px gray;
+}
+
+input,select{
+    width:90%;
+    padding:10px;
+    margin:10px;
+}
+
+button{
+    background:#4CAF50;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#45a049;
+}
+
+#output{
+    margin-top:20px;
+    text-align:left;
+    padding:10px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Automated Interview Slot Scheduler</h2>
+
+<input type="text"
+       id="candidate"
+       placeholder="Enter Candidate Name">
+
+<select id="priority">
+    <option value="High">High</option>
+    <option value="Medium">Medium</option>
+    <option value="Low">Low</option>
+</select>
+
+<button onclick="scheduleInterview()">
+Schedule Interview
+</button>
+
+<div id="output"></div>
+
+</div>
+
+<script>
+
+function utility(priority){
+
+    if(priority==="High")
+        return 100;
+
+    if(priority==="Medium")
+        return 70;
+
+    return 40;
+}
+
+function predictCancellation(){
+
+    let probability=Math.random().toFixed(2);
+
+    let risk="Low";
+
+    if(probability>0.7)
+        risk="High";
+
+    else if(probability>0.4)
+        risk="Medium";
+
+    return {
+        probability:probability,
+        risk:risk
+    };
+}
+
+function scheduleInterview(){
+
+    let candidate=
+        document.getElementById("candidate").value;
+
+    let priority=
+        document.getElementById("priority").value;
+
+    let slots=[
+        "Monday 10:00 AM",
+        "Monday 11:00 AM",
+        "Monday 12:00 PM"
+    ];
+
+    let selectedSlot=slots[0];
+
+    let prediction=
+        predictCancellation();
+
+    let output=
+    `
+    <h3>Interview Scheduled Successfully</h3>
+
+    <p><b>Candidate:</b> ${candidate}</p>
+
+    <p><b>Interviewer:</b> Dr. Ashok</p>
+
+    <p><b>Priority:</b> ${priority}</p>
+
+    <p><b>Utility Score:</b>
+    ${utility(priority)}</p>
+
+    <p><b>Assigned Slot:</b>
+    ${selectedSlot}</p>
+
+    <p><b>Cancellation Probability:</b>
+    ${prediction.probability}</p>
+
+    <p><b>Risk Level:</b>
+    ${prediction.risk}</p>
+    `;
+
+    document.getElementById("output").innerHTML=output;
+}
+
+</script>
+
+</body>
+</html>
